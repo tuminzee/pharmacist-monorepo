@@ -38,7 +38,7 @@ export class AppModule implements NestModule {
     consumer
       .apply(
         clerkMiddleware({
-          secretKey: this.configService.get('CLERK_SECRET_KEY'),
+          secretKey: this.configService.get<string>('CLERK_SECRET_KEY'),
         }),
       )
       .forRoutes(
