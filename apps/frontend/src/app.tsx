@@ -22,9 +22,20 @@ import { Card } from "@/components/ui/card";
 import { PharmaForm } from "@/components/pharma-form";
 import Steps from "rc-steps";
 import "rc-steps/assets/index.css";
-import CompareResult from "./components/compare-results";
+import CompareResult from "@/components/compare-results";
+import { usePing } from "@/hooks/use-ping";
+import { toast } from "sonner";
+import { useEffect } from "react";
 
 function App() {
+  const { data } = usePing();
+
+  useEffect(() => {
+    if (data) {
+      toast.success("Sanjivan.ai is running");
+    }
+  }, [data]);
+
   const user = useUser();
   const setImage = useSetAtom(imageAtom);
   const setEditedPrescription = useSetAtom(editedPrescriptionAtom);
