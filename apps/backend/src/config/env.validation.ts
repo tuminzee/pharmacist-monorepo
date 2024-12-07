@@ -9,4 +9,5 @@ export const envValidation = Joi.object({
   CLERK_SECRET_KEY: Joi.string().required(),
   CLERK_PUBLISHABLE_KEY: Joi.string().required(),
   OPEN_API_KEY: Joi.string().required(),
+  NODE_ENV: Joi.string().required().valid('development', 'production'),
 });

@@ -2,6 +2,7 @@ import { useAtomValue, useSetAtom } from "jotai";
 import { currentStepAtom, processedImageResultAtom } from "@/config/state";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "./ui/button";
+import { toast } from "sonner";
 
 export function ProcessResult() {
   const result = useAtomValue(processedImageResultAtom);
@@ -10,6 +11,7 @@ export function ProcessResult() {
   if (!result) return null;
 
   const onGenerateForm = () => {
+    toast.success("Form generated successfully");
     setCurrentStep((prev) => prev + 1);
   };
 

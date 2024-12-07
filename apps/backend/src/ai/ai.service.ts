@@ -57,6 +57,7 @@ export class AiService {
           },
         ],
         max_tokens: 200,
+        temperature: 0.5,
         response_format: zodResponseFormat(PrescriptionSchema, 'prescription'),
       });
 

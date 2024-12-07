@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
+import { AppClusterService } from 'src/app-cluster.service';
 
 async function bootstrap() {
   const config = new ConfigService();
@@ -37,4 +38,4 @@ async function bootstrap() {
 
   await app.listen(config.get('PORT'));
 }
-bootstrap();
+AppClusterService.clusterize(bootstrap);
