@@ -6,12 +6,14 @@ import {
   UseInterceptors,
   HttpException,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { AppService } from './app.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiConsumes, ApiBody, ApiProperty } from '@nestjs/swagger';
 import { UploadService } from './upload/upload.service';
 import { diskStorage } from 'multer';
+import { AuthGuard } from './auth/auth.guard';
 
 export class FileUploadDto {
   @ApiProperty({
@@ -83,6 +85,7 @@ export class AppController {
     type: FileUploadDto,
   })
   @ApiConsumes('multipart/form-data')
+  @UseGuards(AuthGuard)
   uploadFile(@UploadedFile() file: Express.Multer.File) {
     return this.uploadService.uploadImage(file);
   }

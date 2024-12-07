@@ -6,4 +6,7 @@ export const envValidation = Joi.object({
   CLOUDINARY_CLOUD_NAME: Joi.string().required(),
   CLOUDINARY_API_KEY: Joi.string().required(),
   CLOUDINARY_API_SECRET: Joi.string().required(),
+  CLERK_SECRET_KEY: Joi.string().required(),
+  CLERK_PUBLISHABLE_KEY: Joi.string().required(),
+  OPEN_API_KEY: Joi.string().required(),
 });

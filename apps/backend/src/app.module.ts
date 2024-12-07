@@ -1,10 +1,18 @@
-import { Module } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { envValidation } from './config/env.validation';
 import { CacheModule } from '@nestjs/cache-manager';
 import { UploadModule } from './upload/upload.module';
+import { LoggerModule } from 'nestjs-pino';
+import { clerkMiddleware } from '@clerk/express';
+import { AiModule } from './ai/ai.module';
 
 @Module({
   imports: [
@@ -15,9 +23,25 @@ import { UploadModule } from './upload/upload.module';
       expandVariables: true,
       validationSchema: envValidation,
     }),
+    LoggerModule.forRoot(),
     UploadModule,
+    AiModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  constructor(private readonly configService: ConfigService) {}
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(
+        clerkMiddleware({
+          secretKey: this.configService.get('CLERK_SECRET_KEY'),
+        }),
+      )
+      .forRoutes({
+        path: '/upload',
+        method: RequestMethod.POST,
+      });
+  }
+}

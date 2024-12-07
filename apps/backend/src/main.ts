@@ -7,6 +7,7 @@ import { ValidationPipe, VersioningType } from '@nestjs/common';
 async function bootstrap() {
   const config = new ConfigService();
   const app = await NestFactory.create(AppModule, {
+    logger: ['error', 'warn', 'log', 'debug', 'verbose', 'fatal'],
     cors: true,
     abortOnError: false,
     autoFlushLogs: true,
