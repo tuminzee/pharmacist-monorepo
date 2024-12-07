@@ -44,10 +44,11 @@ export const useComparePrescription = () => {
     onSuccess: (data) => {
       toast.dismiss();
       setCompareResult(data);
+      toast.success("Prescription comparison generated.");
     },
     onError: () => {
       toast.dismiss();
-      toast.error("Failed to upload image. Please try again.");
+      toast.error("Failed to compare prescription. Please try again.");
     },
   });
 };

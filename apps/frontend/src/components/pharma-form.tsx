@@ -10,6 +10,7 @@ import {
   imageAtom,
 } from "@/config/state";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export function PharmaForm() {
   const setCurrentStep = useSetAtom(currentStepAtom);
@@ -18,7 +19,37 @@ export function PharmaForm() {
   );
   const image = useAtomValue(imageAtom);
 
-  if (!editedPrescription) return null;
+  if (!editedPrescription) {
+    return (
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="relative aspect-[3/4] w-full p-4">
+          <Skeleton className="h-full w-full rounded-lg" />
+        </div>
+        <div className="p-4">
+          <Card className="p-6">
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <Skeleton className="h-10 w-full" />
+              </div>
+              <div className="space-y-4">
+                <Skeleton className="h-6 w-24" />
+                {[1, 2, 3].map((_, index) => (
+                  <div key={index} className="space-y-4 p-4 border rounded-lg">
+                    <Skeleton className="h-10 w-full" />
+                  </div>
+                ))}
+              </div>
+              <Skeleton className="h-10 w-full" />
+              <div className="flex justify-center">
+                <Skeleton className="h-10 w-32" />
+              </div>
+              <Button onClick={() => setCurrentStep(0)}>Upload Image</Button>
+            </div>
+          </Card>
+        </div>
+      </div>
+    );
+  }
 
   const onCompareResults = () => {
     setCurrentStep((prev) => prev + 1);
@@ -57,7 +88,7 @@ export function PharmaForm() {
   };
 
   return (
-    <div className="grid grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {/* Preview Image */}
       <div className="relative aspect-[3/4] w-full p-4">
         {image.url && (
@@ -71,10 +102,10 @@ export function PharmaForm() {
 
       {/* Form */}
       <div className="p-4">
-        <Card className="p-6">
+        <Card className="p-4 sm:p-6">
           <div className="space-y-6">
             <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="doctorName">Doctor Name</Label>
                   <Input
@@ -100,7 +131,7 @@ export function PharmaForm() {
               <div className="space-y-4">
                 <h3 className="font-medium">Medicines</h3>
                 {editedPrescription.medicines.map((medicine, index) => (
-                  <div key={index} className="space-y-4 p-4 border rounded-lg">
+                  <div key={index} className="space-y-4 p-3 sm:p-4 border rounded-lg">
                     <div className="space-y-2">
                       <Label htmlFor={`medicine-name-${index}`}>
                         Medicine Name
@@ -166,8 +197,10 @@ export function PharmaForm() {
                 />
               </div>
 
-              <div className="flex justify-center">
-                <Button onClick={onCompareResults}>Compare Results</Button>
+              <div className="flex justify-center pt-4">
+                <Button className="w-full sm:w-auto" onClick={onCompareResults}>
+                  Compare Results
+                </Button>
               </div>
             </div>
           </div>

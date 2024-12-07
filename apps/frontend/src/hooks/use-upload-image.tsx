@@ -22,7 +22,6 @@ export const useUploadImage = () => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(response);
     setImageAtom(response.data);
   };
 

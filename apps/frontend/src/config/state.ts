@@ -4,10 +4,10 @@ import { EditedPrescription, Prescription } from "@/dto/prescription-schema.dto"
 import { PrescriptionComparison } from '@/dto/compare-prescription-res.dto';
 
 export const imageAtom = atomWithStorage<{
-  url?: string;
-  file?: File;
-  name?: string;  
-}>("image", {});
+  url?: string; 
+}>("image", {
+  url: undefined,
+});
 
 export const processedImageResultAtom = atomWithStorage<Prescription | null>(
   "processedImageResult",

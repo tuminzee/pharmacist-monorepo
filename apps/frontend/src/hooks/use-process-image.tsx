@@ -38,12 +38,12 @@ export const useProcessImage = () => {
     mutationFn: processImage,
     onSuccess: () => {
       toast.dismiss();
-      toast.success("Image uploaded successfully.");
+      toast.success("Image processed successfully.");
       setCurrentStep((prev) => prev + 1);
     },
     onError: () => {
       toast.dismiss();
-      toast.error("Failed to upload image. Please try again.");
+      toast.error("Failed to process image. Please try again.");
     },
   });
 };
