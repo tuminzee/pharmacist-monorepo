@@ -16,7 +16,7 @@
 - [x] Setup Diff Tools UI - [It would take me lot of time to give a good UI/UX for this feature, so I decided to make a simple form which is pre populated with dat which is given by AI Model]
 - [x] Edit Diff Tools - [Editable form]
 - [ ] Data Export to AI Model - [Not planned]
-- [ ] Deployment
+- [x] Deployment
 - [ ] Docs
 
 
