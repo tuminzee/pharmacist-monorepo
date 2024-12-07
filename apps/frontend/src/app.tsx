@@ -8,85 +8,83 @@ import {
 } from "@clerk/clerk-react";
 import UploadImg from "@/components/upload-img";
 import ProcessImg from "@/components/process-img";
-import { imageAtom, processedImageResultAtom } from "@/config/state";
-import { useAtomValue, useSetAtom } from "jotai";
+import {
+  currentStepAtom,
+  editedPrescriptionAtom,
+  imageAtom,
+  processedImageResultAtom,
+} from "@/config/state";
+import { useAtom, useSetAtom } from "jotai";
 import { ProcessResult } from "./components/process-result";
-import "rc-steps/assets/index.css";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PharmaForm } from "@/components/pharma-form";
+import Steps from "rc-steps";
+import "rc-steps/assets/index.css";
+import CompareResult from "./components/compare-results";
 
 function App() {
   const user = useUser();
-  const image = useAtomValue(imageAtom);
-  const processedImageResult = useAtomValue(processedImageResultAtom);
   const setImage = useSetAtom(imageAtom);
+  const setEditedPrescription = useSetAtom(editedPrescriptionAtom);
   const setProcessedImageResult = useSetAtom(processedImageResultAtom);
-
-  const currentStep = !image.url ? 0 : !processedImageResult ? 1 : 2;
+  const [currentStep, setCurrentStep] = useAtom(currentStepAtom);
 
   const handleBack = () => {
-    if (currentStep === 2) {
+    if (currentStep === 3) {
+      setEditedPrescription(null);
+    } else if (currentStep === 2) {
       setProcessedImageResult(null);
     } else if (currentStep === 1) {
       setImage({ url: "" });
     }
+    setCurrentStep(currentStep - 1);
   };
 
   const renderSteps = () => {
     const steps = [
       {
-        title: "1. Upload Prescription",
+        title: "Upload",
         status:
           currentStep > 0 ? "finish" : currentStep === 0 ? "process" : "wait",
       },
       {
-        title: "2. Process Image",
+        title: "Process",
         status:
           currentStep > 1 ? "finish" : currentStep === 1 ? "process" : "wait",
       },
       {
-        title: "3. Review Results",
-        status: currentStep === 2 ? "process" : "wait",
+        title: "Review",
+        status:
+          currentStep > 2 ? "finish" : currentStep === 2 ? "process" : "wait",
+      },
+      {
+        title: "Edit",
+        status: currentStep === 3 ? "process" : "wait",
+      },
+      {
+        title: "Compare",
+        status: currentStep === 4 ? "process" : "wait",
       },
     ];
 
     return (
-      <div className="flex w-full max-w-4xl mx-auto">
-        {steps.map((step, index) => (
-          <div
-            key={index}
-            className={`flex-1 relative ${index !== steps.length - 1 ? "pr-4" : ""}`}
-          >
-            <div
-              className={`
-                h-12 flex items-center px-4 rounded-lg
-                ${
-                  step.status === "process"
-                    ? "bg-primary/10 text-primary"
-                    : step.status === "finish"
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-muted text-muted-foreground"
-                }
-                ${index !== steps.length - 1 ? "mr-[2px]" : ""}
-              `}
-            >
-              <span className="text-sm font-medium">{step.title}</span>
-            </div>
-            {index !== steps.length - 1 && (
-              <div
-                className="absolute right-2 top-0 bottom-0 w-4 h-12 flex items-center"
-                style={{
-                  clipPath: "polygon(0 0, 100% 50%, 0 100%)",
-                  backgroundColor:
-                    step.status === "finish"
-                      ? "hsl(var(--primary))"
-                      : "hsl(var(--muted))",
-                }}
-              />
-            )}
-          </div>
-        ))}
+      <div className="w-full max-w-4xl mx-auto">
+        <Steps
+          onChange={(current) => setCurrentStep(current)}
+          className="text-muted-foreground"
+          current={currentStep}
+          items={steps.map((step) => ({
+            title: step.title,
+            status:
+              step.status === "process"
+                ? "process"
+                : step.status === "finish"
+                  ? "finish"
+                  : "wait",
+          }))}
+        />
       </div>
     );
   };
@@ -110,8 +108,10 @@ function App() {
 
           <h1 className="text-xl font-semibold">
             {currentStep === 0 && "Upload Prescription"}
-            {currentStep === 1 && "Process Image"}
-            {currentStep === 2 && "Review Results"}
+            {currentStep === 1 && "Process Prescription Image"}
+            {currentStep === 2 && "Review AI Prescription"}
+            {currentStep === 3 && "Edit AI Prescription"}
+            {currentStep === 4 && "Compare Prescription Results"}
           </h1>
 
           <div>
@@ -136,6 +136,8 @@ function App() {
               {currentStep === 0 && <UploadImg />}
               {currentStep === 1 && <ProcessImg />}
               {currentStep === 2 && <ProcessResult />}
+              {currentStep === 3 && <PharmaForm />}
+              {currentStep === 4 && <CompareResult />}
             </>
           ) : (
             <div className="p-6 text-center">

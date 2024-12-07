@@ -3,13 +3,12 @@ import { toast } from "sonner";
 import { API_URL } from "@/config/config";
 import axios from "axios";
 import { useAuth } from "@clerk/clerk-react";
-import { processedImageResultAtom } from "@/config/state";
+import { currentStepAtom, processedImageResultAtom } from "@/config/state";
 import { useSetAtom } from "jotai";
 import { PrescriptionSchema } from "@/dto/prescription-schema.dto";
 
-
-
 export const useProcessImage = () => {
+  const setCurrentStep = useSetAtom(currentStepAtom);
   const { getToken } = useAuth();
   const setProcessedImageResult = useSetAtom(processedImageResultAtom);
 
@@ -40,6 +39,7 @@ export const useProcessImage = () => {
     onSuccess: () => {
       toast.dismiss();
       toast.success("Image uploaded successfully.");
+      setCurrentStep((prev) => prev + 1);
     },
     onError: () => {
       toast.dismiss();

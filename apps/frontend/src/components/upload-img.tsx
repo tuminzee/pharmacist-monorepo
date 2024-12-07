@@ -69,10 +69,10 @@ export default function UploadImg() {
         <div className="p-4 rounded-full bg-muted mb-2">
           <UploadIcon className="w-6 h-6 text-muted-foreground" />
         </div>
-        <p className="font-medium">
-          Drag and drop your image here
+        <p className="font-medium">Drag and drop your image here</p>
+        <p className="text-sm text-muted-foreground">
+          or click to browse files
         </p>
-        <p className="text-sm text-muted-foreground">or click to browse files</p>
         <p className="text-xs text-muted-foreground mt-2">
           Supports: JPG, PNG, WebP (max 1MB)
         </p>

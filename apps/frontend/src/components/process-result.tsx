@@ -1,11 +1,17 @@
-import { useAtomValue } from "jotai";
-import { processedImageResultAtom } from "@/config/state";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useAtomValue, useSetAtom } from "jotai";
+import { currentStepAtom, processedImageResultAtom } from "@/config/state";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "./ui/button";
 
 export function ProcessResult() {
   const result = useAtomValue(processedImageResultAtom);
+  const setCurrentStep = useSetAtom(currentStepAtom);
 
   if (!result) return null;
+
+  const onGenerateForm = () => {
+    setCurrentStep((prev) => prev + 1);
+  };
 
   return (
     <div className="p-6">
@@ -57,6 +63,11 @@ export function ProcessResult() {
             ))}
           </div>
         </CardContent>
+        <CardFooter>
+          <Button className="w-full" onClick={onGenerateForm}>
+            Generate Form
+          </Button>
+        </CardFooter>
       </Card>
     </div>
   );

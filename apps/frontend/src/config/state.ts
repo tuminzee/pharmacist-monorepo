@@ -1,14 +1,20 @@
 import { atomWithStorage } from 'jotai/utils'
 import { atom } from 'jotai'
-import { PrescriptionSchema } from "@/dto/prescription-schema.dto";
-import { z } from "zod";
+import { Prescription } from "@/dto/prescription-schema.dto";
 
 export const imageAtom = atomWithStorage<{
   url?: string;
   file?: File;
-  name?: string;
+  name?: string;  
 }>("image", {});
 
-export const processedImageResultAtom = atom<
-  z.infer<typeof PrescriptionSchema> | null
->(null);
+export const processedImageResultAtom = atomWithStorage<Prescription | null>(
+  "processedImageResult",
+  null
+);
+
+export const editedPrescriptionAtom = atomWithStorage<Prescription | null>(
+  "editedPrescription",
+  null
+);
+export const currentStepAtom = atom<number>(0);

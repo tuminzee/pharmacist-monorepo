@@ -3,10 +3,11 @@ import { toast } from "sonner";
 import { API_URL } from "@/config/config";
 import axios from "axios";
 import { useAuth } from "@clerk/clerk-react";
-import { imageAtom } from "@/config/state";
+import { imageAtom, currentStepAtom } from "@/config/state";
 import { useSetAtom } from "jotai";
 
 export const useUploadImage = () => {
+  const setCurrentStep = useSetAtom(currentStepAtom);
   const { getToken } = useAuth();
   const setImageAtom = useSetAtom(imageAtom);
 
@@ -31,6 +32,7 @@ export const useUploadImage = () => {
     onSuccess: () => {
       toast.dismiss();
       toast.success("Image uploaded successfully.");
+      setCurrentStep((prev) => prev + 1);
     },
     onError: () => {
       toast.dismiss();

@@ -12,3 +12,20 @@ export const PrescriptionSchema = z.object({
   doctorName: z.string().optional().describe("Name of the prescribing doctor"),
   date: z.string().optional().describe("Date of prescription"),
 });
+
+export interface Medicine {
+  name: string;
+  dosage: string;
+  duration: string;
+  timing?: string;
+}
+
+export interface Prescription {
+  medicines: Medicine[];
+  doctorName?: string;
+  date?: string;
+}
+
+export interface EditedPrescription extends Prescription {
+  remarks: string;
+}
