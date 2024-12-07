@@ -1,16 +1,21 @@
 import { useAtomValue, useSetAtom } from "jotai";
-import { currentStepAtom, processedImageResultAtom } from "@/config/state";
+import { currentStepAtom, editedPrescriptionAtom, processedImageResultAtom } from "@/config/state";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "./ui/button";
 import { toast } from "sonner";
 
 export function ProcessResult() {
   const result = useAtomValue(processedImageResultAtom);
+  const setEditedPrescription = useSetAtom(editedPrescriptionAtom);
   const setCurrentStep = useSetAtom(currentStepAtom);
 
   if (!result) return null;
 
   const onGenerateForm = () => {
+    setEditedPrescription({
+      ...result,
+      remarks: "",
+    });
     toast.success("Form generated successfully");
     setCurrentStep((prev) => prev + 1);
   };

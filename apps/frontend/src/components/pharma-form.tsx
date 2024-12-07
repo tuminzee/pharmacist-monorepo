@@ -1,35 +1,25 @@
-import { useState } from "react";
-
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { EditedPrescription } from "@/dto/prescription-schema.dto";
 import { Medicine } from "@/dto/prescription-schema.dto";
-import { useAtomValue, useSetAtom } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import {
   currentStepAtom,
+  editedPrescriptionAtom,
   imageAtom,
-  processedImageResultAtom,
 } from "@/config/state";
 import { Button } from "@/components/ui/button";
 
 export function PharmaForm() {
   const setCurrentStep = useSetAtom(currentStepAtom);
-  const processedImageResult = useAtomValue(processedImageResultAtom);
-  const [prescription, setPrescription] = useState<EditedPrescription>(
-    processedImageResult
-      ? {
-          ...processedImageResult,
-          remarks: "",
-        }
-      : {
-          medicines: [],
-          date: "",
-          doctorName: "",
-          remarks: "",
-        }
+  const [editedPrescription, setEditedPrescription] = useAtom(
+    editedPrescriptionAtom
   );
   const image = useAtomValue(imageAtom);
+
+  if (!editedPrescription) return null;
+
   const onCompareResults = () => {
     setCurrentStep((prev) => prev + 1);
   };
@@ -39,7 +29,8 @@ export function PharmaForm() {
     field: keyof Medicine,
     value: string
   ) => {
-    setPrescription((prev) => {
+    setEditedPrescription((prev) => {
+      if (!prev) return prev;
       const newMedicines = [...prev.medicines];
       newMedicines[index] = {
         ...newMedicines[index],
@@ -56,10 +47,13 @@ export function PharmaForm() {
     field: keyof EditedPrescription,
     value: string
   ) => {
-    setPrescription((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
+    setEditedPrescription((prev) => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        [field]: value,
+      };
+    });
   };
 
   return (
@@ -85,7 +79,7 @@ export function PharmaForm() {
                   <Label htmlFor="doctorName">Doctor Name</Label>
                   <Input
                     id="doctorName"
-                    value={prescription.doctorName || ""}
+                    value={editedPrescription.doctorName || ""}
                     onChange={(e) =>
                       updatePrescription("doctorName", e.target.value)
                     }
@@ -96,7 +90,7 @@ export function PharmaForm() {
                   <Label htmlFor="date">Date</Label>
                   <Input
                     id="date"
-                    value={prescription.date || ""}
+                    value={editedPrescription.date || ""}
                     onChange={(e) => updatePrescription("date", e.target.value)}
                     placeholder="Prescription Date"
                   />
@@ -105,7 +99,7 @@ export function PharmaForm() {
 
               <div className="space-y-4">
                 <h3 className="font-medium">Medicines</h3>
-                {prescription.medicines.map((medicine, index) => (
+                {editedPrescription.medicines.map((medicine, index) => (
                   <div key={index} className="space-y-4 p-4 border rounded-lg">
                     <div className="space-y-2">
                       <Label htmlFor={`medicine-name-${index}`}>
@@ -164,7 +158,7 @@ export function PharmaForm() {
                 <Label htmlFor="remarks">Additional Remarks</Label>
                 <Input
                   id="remarks"
-                  value={prescription.remarks || ""}
+                  value={editedPrescription.remarks || ""}
                   onChange={(e) =>
                     updatePrescription("remarks", e.target.value)
                   }

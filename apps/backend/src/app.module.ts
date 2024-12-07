@@ -13,6 +13,7 @@ import { UploadModule } from './upload/upload.module';
 import { LoggerModule } from 'nestjs-pino';
 import { clerkMiddleware } from '@clerk/express';
 import { AiModule } from './ai/ai.module';
+import { MetricsModule } from './metrics/metrics.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { AiModule } from './ai/ai.module';
     LoggerModule.forRoot(),
     UploadModule,
     AiModule,
+    MetricsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
@@ -39,9 +41,19 @@ export class AppModule implements NestModule {
           secretKey: this.configService.get('CLERK_SECRET_KEY'),
         }),
       )
-      .forRoutes({
-        path: '/upload',
-        method: RequestMethod.POST,
-      });
+      .forRoutes(
+        {
+          path: '/upload',
+          method: RequestMethod.POST,
+        },
+        {
+          path: '/ai/process',
+          method: RequestMethod.POST,
+        },
+        {
+          path: '/metrics',
+          method: RequestMethod.POST,
+        },
+      );
   }
 }

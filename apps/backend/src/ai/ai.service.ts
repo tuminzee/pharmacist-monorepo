@@ -1,22 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import OpenAI from 'openai';
 import { zodResponseFormat } from 'openai/helpers/zod';
-import { z } from 'zod';
+import { PrescriptionSchema, PrescriptionType } from 'src/ai/dto/ai.dto';
 
-const PrescriptionSchema = z.object({
-  medicines: z.array(
-    z.object({
-      name: z.string().describe('Name of the medicine'),
-      dosage: z.string().describe('Dosage instructions'),
-      duration: z.string().describe('Duration of the prescription'),
-      timing: z.string().optional().describe('When to take the medicine'),
-    }),
-  ),
-  doctorName: z.string().optional().describe('Name of the prescribing doctor'),
-  date: z.string().optional().describe('Date of prescription'),
-});
-
-type PrescriptionType = z.infer<typeof PrescriptionSchema>;
 @Injectable()
 export class AiService {
   private readonly logger = new Logger(AiService.name);

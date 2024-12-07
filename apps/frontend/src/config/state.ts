@@ -1,6 +1,7 @@
 import { atomWithStorage } from 'jotai/utils'
 import { atom } from 'jotai'
-import { Prescription } from "@/dto/prescription-schema.dto";
+import { EditedPrescription, Prescription } from "@/dto/prescription-schema.dto";
+import { PrescriptionComparison } from '@/dto/compare-prescription-res.dto';
 
 export const imageAtom = atomWithStorage<{
   url?: string;
@@ -13,8 +14,9 @@ export const processedImageResultAtom = atomWithStorage<Prescription | null>(
   null
 );
 
-export const editedPrescriptionAtom = atomWithStorage<Prescription | null>(
-  "editedPrescription",
-  null
-);
+export const editedPrescriptionAtom = atomWithStorage<
+  EditedPrescription | null
+>("editedPrescription", null);
 export const currentStepAtom = atom<number>(0);
+
+export const compareResultAtom = atom<PrescriptionComparison | null>(null);

@@ -16,7 +16,7 @@ export const useProcessImage = () => {
     const token = await getToken();
     toast.loading("Processing image...");
     const response = await axios.post(
-      `${API_URL}/ai/process-image`,
+      `${API_URL}/ai/process`,
       { imageUrl },
       {
         headers: {
