@@ -20,5 +20,6 @@
 - [ ] Docs
 
 
-[Sanjivan.ai Overall Product Walkthrough Local](https://www.loom.com/share/84589b49c170491facfa833ade1a6220?sid=0948e4ba-95c9-4a79-9a1e-3653c5f964c1)
+[Overall Product Walkthrough Local](https://www.loom.com/share/84589b49c170491facfa833ade1a6220?sid=0948e4ba-95c9-4a79-9a1e-3653c5f964c1)
+
 [Upload Image, Process Image, View Results, Video Recording Demo](https://www.loom.com/share/af096ce8b979403c95082ddd60ea859c?sid=37d80df7-a7af-44ee-b808-34d88cd3af04)  
